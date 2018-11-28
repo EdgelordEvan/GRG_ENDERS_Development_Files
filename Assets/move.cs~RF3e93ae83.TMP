@@ -1,0 +1,79 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class move : MonoBehaviour {
+
+    private Rigidbody2D Edgeplayer;
+    public Animator EdgeAnimator;
+    public SpriteRenderer EdgeRenderer;
+    
+    public float EdgeSpeed;
+    public float EdgeJump;
+    float EdgeVelocity;
+    bool EdgeGrounded = false;
+
+	// Use this for initialization
+	void Start () {
+        Edgeplayer = GetComponent<Rigidbody2D>();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+        float X_Move = Input.GetAxisRaw("Horizontal");
+        DownCheck();
+        Movement(X_Move);
+        Jump();
+
+        
+            EdgeAnimator.SetFloat("Speed", Mathf.Abs(X_Move));
+        
+
+        if (X_Move < 0)
+        {
+            EdgeRenderer.flipX = true;
+        }
+        else
+        {
+            EdgeRenderer.flipX = false;
+        }
+
+        Debug.Log(EdgeGrounded);
+	}
+
+    private void Movement(float X_Move)
+    {
+        Edgeplayer.velocity = new Vector2(X_Move * EdgeSpeed, Edgeplayer.velocity.y);
+    }
+    private void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            if (EdgeGrounded)
+            {
+                GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, EdgeJump);
+            }
+        }
+    }
+
+    public void DownCheck()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            EdgeAnimator.SetBool("Down", true);  
+        }
+        else if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S))
+        {
+            EdgeAnimator.SetBool("Down", false);
+        }
+    }
+
+    public void OnTriggerEnter2D()
+    {
+        EdgeGrounded = true;
+    }
+    public void OnTriggerExit2D()
+    {
+        EdgeGrounded = false;
+    }
+}

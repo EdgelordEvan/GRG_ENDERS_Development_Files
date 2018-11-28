@@ -1,0 +1,2 @@
+F:\GRG Enders\GRG Enders\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+F:\GRG Enders\GRG Enders\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
